@@ -1,21 +1,19 @@
-<div style="text-align: center;">
+<p align="center">
   <img alt="Typst Support Logo" src="./assets/logo.png" width="450" />
-</div>
+</p>
 
 ####
 
-<div style="text-align: center;">
-
-[![Version](https://img.shields.io/jetbrains/plugin/v/MARKETPLACE_ID.svg)](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID)
-[![Downloads](https://img.shields.io/jetbrains/plugin/d/MARKETPLACE_ID.svg)](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID)
-
-</div>
+<p align="center">
+[![Version](https://img.shields.io/jetbrains/plugin/v/27697-typst-support.svg)](https://plugins.jetbrains.com/plugin/27697-typst-support)
+[![Downloads](https://img.shields.io/jetbrains/plugin/d/27697-typst-support.svg)](https://plugins.jetbrains.com/plugin/27697-typst-support)
+</p>
 
 
 <!-- Plugin description -->
-<div style="text-align: center;">
+<p align="center">
   <h3>An IntelliJ Plugin for Typst powered by Tinymist</h3>
-</div>
+</p>
 
 ## Features
 
@@ -37,9 +35,9 @@ Changes to documents are updated in the preview window in real time.
 
 ####
 
-<div style="text-align: center;">
+<p align="center">
   <img alt="Live Preview" src="./assets/live-preview.gif" width="800" />
-</div>
+</p>
 
 ####
 
@@ -48,9 +46,9 @@ Click on a part of the preview document to jump to the definition of that elemen
 
 ####
 
-<div style="text-align: center;">
+<p align="center">
   <img alt="Jump to Definition" src="./assets/jump-to-definition.gif" width="800" />
-</div>
+</p>
 
 ####
 
@@ -59,9 +57,9 @@ Hover over a symbol to view its documentation.
 
 ####
 
-<div style="text-align: center;">
+<p align="center">
   <img alt="Documentation on Hover" src="./assets/hover-documentation.gif" width="800" />
-</div>
+</p>
 
 ####
 
@@ -70,9 +68,9 @@ List all the places a symbol is used in the project.
 
 ####
 
-<div style="text-align: center;">
+<p align="center">
   <img alt="Find Usages" src="./assets/find-usages.gif" width="800" />
-</div>
+</p>
 
 ####
 
@@ -81,9 +79,9 @@ Suggestions for symbols as you type.
 
 ####
 
-<div style="text-align: center;">
+<p align="center">
   <img alt="Reformat File" src="./assets/autocomplete.gif" width="800" />
-</div>
+</p>
 
 ####
 
@@ -92,9 +90,9 @@ Reformat entire files with `typstfmt` or `typstyle`.
 
 ####
 
-<div style="text-align: center;">
+<p align="center">
   <img alt="Reformat File" src="./assets/reformat-file.gif" width="800" />
-</div>
+</p>
 
 ####
 
@@ -103,9 +101,9 @@ Specify your local version of `tinymist` to be used with this plugin.
 
 ####
 
-<div style="text-align: center;">
+<p align="center">
   <img alt="Typst Support Logo" src="./assets/configuration.png" width="800" />
-</div>
+</p>
 
 ## Installation
 

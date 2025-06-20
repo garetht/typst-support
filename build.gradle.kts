@@ -149,7 +149,10 @@ kover { reports { total { xml { onCheck = true } } } }
 tasks {
   wrapper { gradleVersion = providers.gradleProperty("gradleVersion").get() }
 
-  publishPlugin { dependsOn(patchChangelog) }
+  publishPlugin {
+    dependsOn(patchChangelog)
+    token = System.getenv("PUBLISH_TOKEN")
+  }
 
   test {
     useJUnitPlatform()
