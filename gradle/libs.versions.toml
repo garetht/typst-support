@@ -10,7 +10,7 @@ commonsCompress = "1.27.1"
 
 # plugins
 changelog = "2.2.1"
-intelliJPlatform = "2.5.0"
+intelliJPlatform = "2.6.0"
 kotlin = "2.2.0"
 kover = "0.9.1"
 qodana = "2025.1.1"
