@@ -13,7 +13,7 @@ changelog = "2.3.0"
 intelliJPlatform = "2.5.0"
 kotlin = "2.2.0"
 kover = "0.9.1"
-qodana = "2025.1.1"
+qodana = "2025.2.1"
 
 [libraries]
 junitVintageEngine = { group = "org.junit.vintage", name = "junit-vintage-engine", version.ref = "junit" }
