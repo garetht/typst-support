@@ -147,12 +147,34 @@ class TypstPreviewEditor(
         cancelable: false,
         view: window
       });
-      
+
       // Dispatch to the document
       document.dispatchEvent(wheelEvent);
-      
-      // Manually scroll the page
-      window.scrollBy($deltaX, $deltaY);
+
+      // Scroll the page. The scroll container depends on the tinymist version:
+      // newer preview frontends (v0.15.x) keep the body fixed with
+      // `overflow: hidden` and scroll inside `#typst-container-main`
+      // (`overflow: auto`), while older ones (v0.13.x) scroll the window
+      // itself. Pick the last scrollable container in the document and fall
+      // back to the window for the older frontend.
+      var scroller = null;
+      var elements = document.querySelectorAll('*');
+      for (var i = 0; i < elements.length; i++) {
+        var style = getComputedStyle(elements[i]);
+        var scrollable =
+          (style.overflowY === 'auto' || style.overflowY === 'scroll') &&
+          elements[i].scrollHeight > elements[i].clientHeight;
+        if (scrollable) {
+          scroller = elements[i];
+        }
+      }
+      if (!scroller) {
+        scroller = document.scrollingElement;
+      }
+      if (scroller) {
+        scroller.scrollBy($deltaX, $deltaY);
+      }
+      console.log('typst-support scroll injected: target=' + (scroller && (scroller.id || scroller.tagName)) + ' scrollTopAfter=' + (scroller ? scroller.scrollTop : 'n/a'));
     })();
   """
         .trimIndent()

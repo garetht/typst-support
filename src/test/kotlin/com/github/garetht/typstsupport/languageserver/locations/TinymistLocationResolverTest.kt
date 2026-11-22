@@ -165,7 +165,7 @@ class TinymistLocationResolverTest {
     )
 
     private val supportedVersions = listOf(
-      "0.13.14",
+      "0.15.12",
     )
 
     @JvmStatic
@@ -224,7 +224,7 @@ class TinymistLocationResolverTest {
             val basePath = "/%s".format(UUID.randomUUID().toString())
             val expectedPath = "%s/language-server/%s/tinymist%s".format(
               basePath,
-              "v0.13.14",
+              "v0.15.12",
               osOpt.executableExtension
             )
             yield(

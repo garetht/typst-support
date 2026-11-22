@@ -26,10 +26,10 @@ class DefaultExecutionValidator(
         val version = Version.Companion.parseVersion(output)
         if (version == null) {
           ExecutionValidation.Failed("No version information could be found.")
-        } else if (version >= VersionRequirement.version) {
+        } else if (version >= VersionRequirement.minimumVersion) {
           ExecutionValidation.Success(version)
-        } else if (version < VersionRequirement.version) {
-          ExecutionValidation.Failed("Tinymist version ${version.toPathString()} is below required version ${VersionRequirement.version.toPathString()}")
+        } else if (version < VersionRequirement.minimumVersion) {
+          ExecutionValidation.Failed("Tinymist version ${version.toPathString()} is below required version ${VersionRequirement.minimumVersion.toPathString()}")
         } else {
           ExecutionValidation.Failed("Invalid binary output format")
         }

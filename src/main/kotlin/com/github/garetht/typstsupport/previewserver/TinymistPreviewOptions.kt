@@ -1,5 +1,7 @@
 package com.github.garetht.typstsupport.previewserver
 
+import com.github.garetht.typstsupport.configuration.VersionRequirement
+import com.github.garetht.typstsupport.languageserver.locations.Version
 import com.intellij.openapi.diagnostic.logger
 import java.nio.file.Path
 import java.util.UUID
@@ -21,6 +23,10 @@ data class TinymistPreviewOptions(
   val host: String = "",
   val dataPlaneHostPort: Int? = null,
   val controlPlaneHostPort: Int? = null,
+  // Version of the running tinymist server; decides the flag syntax for
+  // `--partial-rendering` (see `partialRenderingFlag`). `null` (unknown) falls
+  // back to the modern `=true` form, which is what the auto-downloaded binary uses.
+  val tinymistVersion: Version? = null,
 ) {
   fun toCommandParamsArguments(filename: String): List<List<String>> {
     return listOf(this.toCommandList(filename))
@@ -30,7 +36,7 @@ data class TinymistPreviewOptions(
     val command = mutableListOf(filename)
 
     if (partialRendering == true) {
-      command.add("--partial-rendering")
+      command.add(partialRenderingFlag(tinymistVersion))
     }
 
     when (val colors = invertColors) {
@@ -110,4 +116,16 @@ data class TinymistPreviewOptions(
     Document("document"),
     Slide("slide")
   }
-} 
+}
+
+// tinymist v0.13.17 changed the preview's `--partial-rendering` flag from a bare
+// boolean flag to one that requires an explicit value. Older builds reject the
+// valued form ("unexpected value 'true' for '--partial-rendering' found; no more
+// were expected"), newer builds reject the bare form ("a value is required for
+// '--partial-rendering <ENABLE_PARTIAL_RENDERING>' but none was supplied").
+internal fun partialRenderingFlag(tinymistVersion: Version?): String =
+  if (tinymistVersion != null && tinymistVersion < VersionRequirement.valuedPartialRenderingVersion) {
+    "--partial-rendering"
+  } else {
+    "--partial-rendering=true"
+  }

@@ -20,7 +20,7 @@ class TinymistLocationResolver : LocationResolver {
 
   private val binary =
     TinymistBinary(
-      version = VersionRequirement.version,
+      version = VersionRequirement.downloadVersion,
       osName = OsName.fromString(System.getProperty("os.name")),
       osArchitecture = OsArchitecture.fromString(System.getProperty("os.arch")),
     )

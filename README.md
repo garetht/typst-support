@@ -127,7 +127,7 @@ Works in 2025.1+ IntelliJ IDEs. May not work in Rider.
 
 ## Compatible Tinymist
 
-Currently, only `tinymist` versions `0.13.14` and above are supported. 
+Custom `tinymist` binaries `0.13.14` and above are supported. Otherwise, `tinymist` `v0.15.12` is downloaded automatically.
 
 ## Feature Support
 

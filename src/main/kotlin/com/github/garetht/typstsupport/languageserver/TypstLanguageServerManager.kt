@@ -1,5 +1,6 @@
 package com.github.garetht.typstsupport.languageserver
 
+import com.github.garetht.typstsupport.previewserver.TinymistPreviewServerManager
 import com.intellij.codeInsight.daemon.DaemonCodeAnalyzer
 import com.intellij.openapi.application.EDT
 import com.intellij.openapi.diagnostic.logger
@@ -22,6 +23,11 @@ class TypstLanguageServerManager : LanguageServerManager {
   override suspend fun initialStart(project: Project) {
     val providerClass = TypstLspServerSupportProvider::class.java
     val manager = LspServerManager.getInstance(project)
+
+    // Restarting the language server kills its preview servers, so forget the
+    // addresses cached for the previous process.
+    TinymistPreviewServerManager.getInstance().invalidateServers()
+
     manager.stopAndRestartIfNeeded(providerClass)
     repaintOnIntialize(manager, project, providerClass)
   }

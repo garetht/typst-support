@@ -1,11 +1,13 @@
 package com.github.garetht.typstsupport.previewserver
 
+import com.github.garetht.typstsupport.languageserver.locations.Version
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import java.nio.file.Path
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class TinymistPreviewOptionsTest {
@@ -98,6 +100,7 @@ class TinymistPreviewOptionsTest {
   fun `all options should generate complete command`() {
     val options = TinymistPreviewOptions(
       partialRendering = true,
+      tinymistVersion = Version(0, 15, 12),
       invertColors = TinymistPreviewOptions.InvertColors.ByElement(
         rest = TinymistPreviewOptions.InvertStrategy.Always,
         image = TinymistPreviewOptions.InvertStrategy.Never
@@ -118,7 +121,7 @@ class TinymistPreviewOptionsTest {
     val command = options.toCommandList("file/name.typ")
     val expectedCommands = listOf(
       "file/name.typ",
-      "--partial-rendering",
+      "--partial-rendering=true",
       "--invert-colors={\"rest\": \"always\", \"image\": \"never\"}",
       "--root", "/root",
       "--input", "key1=value1",
@@ -137,6 +140,44 @@ class TinymistPreviewOptionsTest {
     )
 
     assertEquals(expectedCommands, command)
+  }
+
+  @Test
+  fun `modern tinymist versions should use the valued partial rendering flag`() {
+    val options = TinymistPreviewOptions(partialRendering = true, tinymistVersion = Version(0, 15, 12))
+
+    val command = options.toCommandList("file/name.typ")
+    assertTrue(command.contains("--partial-rendering=true"))
+    assertFalse(command.contains("--partial-rendering"))
+  }
+
+  @Test
+  fun `legacy tinymist versions should use the bare partial rendering flag`() {
+    val options = TinymistPreviewOptions(partialRendering = true, tinymistVersion = Version(0, 13, 16))
+
+    val command = options.toCommandList("file/name.typ")
+    assertTrue(command.contains("--partial-rendering"))
+    assertFalse(command.contains("--partial-rendering=true"))
+  }
+
+  @Test
+  fun `unknown tinymist version should fall back to the valued partial rendering flag`() {
+    val options = TinymistPreviewOptions(partialRendering = true, tinymistVersion = null)
+
+    val command = options.toCommandList("file/name.typ")
+    assertTrue(command.contains("--partial-rendering=true"))
+  }
+
+  @ParameterizedTest
+  @MethodSource("providePartialRenderingVersionThresholds")
+  fun `partial rendering flag should respect the version threshold`(
+    version: Version,
+    expectedFlag: String
+  ) {
+    val options = TinymistPreviewOptions(partialRendering = true, tinymistVersion = version)
+
+    val command = options.toCommandList("file/name.typ")
+    assertTrue(command.contains(expectedFlag), "Version $version should produce $expectedFlag")
   }
 
   companion object {
@@ -239,6 +280,15 @@ class TinymistPreviewOptionsTest {
         8081,
         listOf("--control-plane-host", "127.0.0.1:8081")
       )
+    )
+
+    @JvmStatic
+    fun providePartialRenderingVersionThresholds() = listOf(
+      Arguments.of(Version(0, 13, 14), "--partial-rendering"),
+      Arguments.of(Version(0, 13, 16), "--partial-rendering"),
+      Arguments.of(Version(0, 13, 17), "--partial-rendering=true"),
+      Arguments.of(Version(0, 14, 0), "--partial-rendering=true"),
+      Arguments.of(Version(0, 15, 12), "--partial-rendering=true")
     )
   }
 } 

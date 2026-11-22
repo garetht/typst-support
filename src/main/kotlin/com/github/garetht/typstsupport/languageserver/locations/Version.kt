@@ -16,23 +16,31 @@ data class Version(val major: Int, val minor: Int, val patch: Int): Comparable<V
 
   companion object {
     fun parseVersion(output: String): Version? {
-      // Pattern to match "tinymist X.Y.Z" format
+      // Pattern to match "tinymist X.Y.Z" format (e.g. from `tinymist -V` output)
       val pattern =
         Pattern.compile("tinymist\\s+(\\d+)\\.(\\d+)\\.(\\d+)", Pattern.CASE_INSENSITIVE)
       val matcher = pattern.matcher(output)
 
-      return if (matcher.find()) {
-        try {
-          val major = matcher.group(1).toInt()
-          val minor = matcher.group(2).toInt()
-          val patch = matcher.group(3).toInt()
-          Version(major, minor, patch)
-        } catch (e: NumberFormatException) {
-          null
-        }
-      } else {
-        null
+      if (matcher.find()) {
+        return versionOf(matcher.group(1), matcher.group(2), matcher.group(3))
       }
+
+      // Fallback: bare "X.Y.Z" format (e.g. the LSP `InitializeResult` serverInfo.version).
+      // Anchored so that unrelated numbers embedded in longer text (e.g. error
+      // messages) are not mistaken for a version.
+      val barePattern = Pattern.compile("^v?(\\d+)\\.(\\d+)\\.(\\d+)$")
+      val bareMatcher = barePattern.matcher(output.trim())
+      if (bareMatcher.matches()) {
+        return versionOf(bareMatcher.group(1), bareMatcher.group(2), bareMatcher.group(3))
+      }
+
+      return null
+    }
+
+    private fun versionOf(major: String, minor: String, patch: String): Version? = try {
+      Version(major.toInt(), minor.toInt(), patch.toInt())
+    } catch (e: NumberFormatException) {
+      null
     }
   }
 }

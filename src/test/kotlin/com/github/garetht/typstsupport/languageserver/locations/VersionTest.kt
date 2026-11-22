@@ -40,7 +40,10 @@ class VersionTest {
       "tinymist 1.2.3",
       "Tinymist 1.2.3",
       "TINYMIST 1.2.3",
-      "tinymist 10.20.30"
+      "tinymist 10.20.30",
+      // Bare format from the LSP `InitializeResult` serverInfo.version
+      "0.15.12",
+      "v0.15.12"
     )
 
     validInputs.forEach { input ->
